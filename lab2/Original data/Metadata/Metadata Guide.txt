@@ -1,0 +1,11 @@
+Oryginalne dane tb.csv zamieszczone w folderze /Original data. Skopiowane do folderu /Analysis data.
+
+Dane o gruźlicy w różnych grupach pacjentów. Tabela koduje jednocześnie informacje o wieku i o płci w kolumnach.
+
+Pobrane 16.10.2021 z 
+
+https://github.com/KAIR-ISZ/public_lectures/tree/master/Analiza%20i%20Bazy%20Danych%202021/Lab%202/Datasets
+
+
+
+
