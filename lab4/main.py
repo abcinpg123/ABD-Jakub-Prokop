@@ -1,5 +1,6 @@
-import numpy as np
+
 import pickle
+import numpy as np
 
 import psycopg2 as pg
 import pandas.io.sql as psql
@@ -25,6 +26,11 @@ def film_in_category(category_id:int)->pd.DataFrame:
     Returns:
     pd.DataFrame: DataFrame zawierający wyniki zapytania
     '''
+    df = pd.read_sql('select * from city',con=connection)
+    return df
+
+
+
     return None
     
 def number_films_in_category(category_id:int)->pd.DataFrame:
