@@ -29,20 +29,20 @@ def film_in_category(category:Union[int,str])->pd.DataFrame:
     pd.DataFrame: DataFrame zawierający wyniki zapytania
     '''
     if isinstance(category, int):
-        df = pd.read_sql("""select title, language, category.name from category 
+        df = pd.read_sql("""select film.title, language.name as languge, category.name as category from category 
                          LEFT OUTER JOIN film_category on category.category_id = film_category.category_id 
                          INNER JOIN film on film_category.film_id=film.film_id 
                          INNER JOIN language on film.language_id = language.language_id 
-                         WHERE category.category_id = (%s)
+                         WHERE category.category_id = %s
                          ORDER BY title, language
                          """, params=[category], con=connection)
         return df
     elif isinstance(category, str):
-        df = pd.read_sql("""select title, language, category.name from category 
+        df = pd.read_sql("""select film.title, language.name as languge, category.name as category from category 
                          LEFT OUTER JOIN film_category on category.category_id = film_category.category_id 
                          INNER JOIN film on film_category.film_id=film.film_id 
                          INNER JOIN language on film.language_id = language.language_id 
-                         WHERE category.category_name = (%s)
+                         WHERE category.name like (%s)
                          ORDER BY title, language
                          """, params=[category], con=connection)
         return df
@@ -67,20 +67,20 @@ def film_in_category_case_insensitive(category:Union[int,str])->pd.DataFrame:
     pd.DataFrame: DataFrame zawierający wyniki zapytania
     '''
     if isinstance(category, int):
-        df = pd.read_sql("""select title, language, category.name from category 
+        df = pd.read_sql("""select film.title, language.name as languge, category.name as category from category 
                          LEFT OUTER JOIN film_category on category.category_id = film_category.category_id 
                          INNER JOIN film on film_category.film_id=film.film_id 
                          INNER JOIN language on film.language_id = language.language_id 
-                         WHERE category.category_id ~ '%(%s)%'
-                         ORDER BY title, language
+                         WHERE category.category_id = %s
+                         ORDER BY title, language 
                          """, params=[category], con=connection)
         return df
     elif isinstance(category, str):
-        df = pd.read_sql("""select title, language, category.name from category 
+        df = pd.read_sql("""select film.title, language.name as languge, category.name as category from category 
                          LEFT OUTER JOIN film_category on category.category_id = film_category.category_id 
                          INNER JOIN film on film_category.film_id=film.film_id 
                          INNER JOIN language on film.language_id = language.language_id 
-                         WHERE category.category_name = (%s)
+                         WHERE category.name ilike (%s)
                          ORDER BY title, language
                          """, params=[category], con=connection)
         return df
@@ -101,6 +101,14 @@ def film_cast(title:str)->pd.DataFrame:
     Returns:
     pd.DataFrame: DataFrame zawierający wyniki zapytania
     '''
+    if isinstance(title, str):
+        df = pd.read_sql("""select first_name, last_name from actor 
+                         INNER JOIN film_actor on actor.actor_id = film_actor.actor_id
+                         INNER JOIN film on film_actor.film_id=film.film_id 
+                         WHERE title like (%s)
+                         ORDER BY last_name, first_name
+                         """, params=[title], con=connection)
+        return df
     return None
     
 
@@ -120,4 +128,15 @@ def film_title_case_insensitive(words:list) :
     Returns:
     pd.DataFrame: DataFrame zawierający wyniki zapytania
     '''
+    if isinstance(words, list):
+
+        for i, word in enumerate(words):
+            words[i] = '\m' + words[i] + '\M'
+        words_str = '|'.join(words)
+        print(words_str)
+        df = pd.read_sql("""select title from film WHERE title ~* (%s)
+                         """, params=[words_str] , con=connection)
+        print(df)
+        return df
+    print("df")
     return None
