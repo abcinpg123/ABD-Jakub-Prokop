@@ -28,7 +28,7 @@ def film_in_category(category_id:int)->pd.DataFrame:
     '''
 
     if isinstance(category_id, int):
-        df = pd.read_sql("""select title, language, category.name from category 
+        df = pd.read_sql("""select title, language.name as languge, category.name as category from category 
                          LEFT OUTER JOIN film_category on category.category_id = film_category.category_id 
                          INNER JOIN film on film_category.film_id=film.film_id 
                          INNER JOIN language on film.language_id = language.language_id 
@@ -54,7 +54,7 @@ def number_films_in_category(category_id:int)->pd.DataFrame:
     pd.DataFrame: DataFrame zawierający wyniki zapytania
     '''
     if isinstance(category_id, int):
-        df = pd.read_sql("""select category.name, count(film.film_id) from category 
+        df = pd.read_sql("""select category.name as category, count(film.film_id) from category 
                          LEFT OUTER JOIN film_category on category.category_id = film_category.category_id 
                          INNER JOIN film on film_category.film_id=film.film_id 
                          WHERE category.category_id = (%s)
@@ -80,9 +80,9 @@ def number_film_by_length(min_length: Union[int,float] = 0, max_length: Union[in
     pd.DataFrame: DataFrame zawierający wyniki zapytania
     '''
     if (isinstance(min_length, int) or isinstance(min_length, float)) \
-            and (isinstance(max_length, int) or isinstance(max_length, float)):
+            and (isinstance(max_length, int) or isinstance(max_length, float)) and min_length < max_length:
         df = pd.read_sql("""select length, count(film.film_id) from  film 
-                         WHERE length > (%s) and length < (%s)
+                         WHERE length >= (%s) and length <= (%s)
                          GROUP BY length
                          """, params=[min_length, max_length], con=connection)
         return df
@@ -162,8 +162,9 @@ def client_by_sum_length(sum_min:Union[int,float])->pd.DataFrame:
         INNER JOIN rental on rental.customer_id=customer.customer_id 
         INNER JOIN inventory on rental.inventory_id = inventory.inventory_id 
         INNER JOIN film on inventory.film_id = film.film_id 
-        GROUP BY customer.first_name, last_name 
-        having  sum(length) > (%s)
+        GROUP BY first_name, last_name 
+        having sum(length) >= (%s)
+        ORDER BY sum(length), last_name
                          """, params=[sum_min], con=connection)
         return df
     return None
@@ -184,7 +185,7 @@ def category_statistic_length(name:str)->pd.DataFrame:
     pd.DataFrame: DataFrame zawierający wyniki zapytania
     '''
     if isinstance(name, str):
-        df = pd.read_sql("""SELECT name, AVG(length), SUM(length), MIN(length), MAX(length) from category 
+        df = pd.read_sql("""SELECT category.name as category, AVG(length), SUM(length), MIN(length), MAX(length) from category 
         INNER JOIN film_category on film_category.category_id = category.category_id 
         INNER JOIN film on film_category.film_id = film.film_id GROUP BY name
             having  category.name = (%s)""", params=[name], con=connection)
