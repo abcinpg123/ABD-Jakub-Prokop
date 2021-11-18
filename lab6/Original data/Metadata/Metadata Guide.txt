@@ -1,0 +1,17 @@
+Oryginalne dane 0_DOLNOŚLĄSKIE.csv zamieszczone w folderze /Original data. Skopiowane do folderu /Analysis data.
+
+Pobrane 18.11.2021 z 
+
+https://github.com/KAIR-ISZ-ADB/laboratorium-6-abcinpg123
+
+Dane to wyniki oceny odkurzaczy w jednej z sieci sklepów z województwa dolnośląskiego oraz dane kupujących.
+
+Zmienne tworzące kolumny:
+
+- w pierwszej, nienazwanej kolumnie indeks zaczynający się od 0 - liczba całkowita
+- "Dni od zakupu" - liczba dni, które upłynęły od zakupu do wystawienia oceny
+- "Marka produktu" - np. "Beko", "Electrolux" itd.
+- "Wiek kupującego" - liczba typu float bądź pusta komórka w przypadku braku danych
+- "Płeć kupującego" - K - kobieta / M - Mężczyzna / bd - brak danych
+- "Ocena" - ocena produktu przez użytkownika, liczba należąca do zbioru {1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0}
+

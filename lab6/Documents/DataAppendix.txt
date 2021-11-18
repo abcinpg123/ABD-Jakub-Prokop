@@ -1,0 +1,10 @@
+# lab2.ipynb - interaktywny i udokumentowany notebook przetwarzający dane z pliku /Analysis data/tb.csv.
+
+Najważniejsze zmienne:
+
+tb - przechowuje tabelę z danymi wczytanymi z pliku tb.csv w formacie Pandas.DataFrame
+data_dict - słownik w formacie słownika { (iso państwa - dwie drukowane litery) : (tabela) } przechowujący przetworzone tabele z danymi. 
+		Tabele dopuszczają brakujące wartości, niedopuszczalne są jedynie całe kolumny lub wiersze w których nie ma danych 
+		(wartości NaN).
+
+
