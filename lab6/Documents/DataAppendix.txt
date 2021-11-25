@@ -1,10 +1,16 @@
-# lab2.ipynb - interaktywny i udokumentowany notebook przetwarzający dane z pliku /Analysis data/tb.csv.
+# lab6.ipynb - interaktywny i udokumentowany notebook przetwarzający dane z pliku /Analysis data/tb.csv.
 
 Najważniejsze zmienne:
 
-tb - przechowuje tabelę z danymi wczytanymi z pliku tb.csv w formacie Pandas.DataFrame
-data_dict - słownik w formacie słownika { (iso państwa - dwie drukowane litery) : (tabela) } przechowujący przetworzone tabele z danymi. 
-		Tabele dopuszczają brakujące wartości, niedopuszczalne są jedynie całe kolumny lub wiersze w których nie ma danych 
-		(wartości NaN).
+data - przechowuje tabelę z danymi wczytanymi z pliku 0_DOLNOŚLĄSKIE.csv w formacie Pandas.DataFrame. Zawiera 600 rekordów w 6 kolumnach.
+
+Zmienne tworzące kolumny:
+
+- w pierwszej, nienazwanej kolumnie indeks zaczynający się od 0 - liczba całkowita
+- "Dni od zakupu" - liczba dni, które upłynęły od zakupu do wystawienia oceny
+- "Marka produktu" - np. "Beko", "Electrolux" itd.
+- "Wiek kupującego" - liczba typu float bądź pusta komórka w przypadku braku danych
+- "Płeć kupującego" - K - kobieta / M - Mężczyzna / bd - brak danych
+- "Ocena" - ocena produktu przez użytkownika, liczba należąca do zbioru {1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0}
 
 
